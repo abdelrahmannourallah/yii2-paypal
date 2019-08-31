@@ -11,22 +11,23 @@ use PayPal\Api\Payment;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Api\PaymentExecution;
-use yii\base\Component;
+use PayPal\Auth\OAuthTokenCredential;
+ use yii\base\Component;
 
 /*
  * You can not redistribution  this code without contact Abdelrahman Nourallah
  */
 
 /**
- * Description of Paypal
+ * Description of paypal
  *
  * @author abdelrahman nourallah <info@ip4t.net>
  * AMMAN - Jordan
  */
-class PayPal extends Component
+class Paypal extends Component
 {
 
-    const PAYMENT_METHOD_PAYPAL = 'paypal';
+    const PAYMENT_METHOD_paypal = 'paypal';
     const PAYMENT_METHOD_CREADIT_CARD = 'credit_card';
     const PAYMENT_METHOD_PAY_UPON_INVOICE = 'pay_upon_invoice';
     const PAYMENT_METHOD_CARRIER = 'carrier';
@@ -44,7 +45,7 @@ class PayPal extends Component
 
     private function setConfig()
     {
-        $this->_paypal = new \PayPal\Rest\ApiContext(new \PayPal\Auth\OAuthTokenCredential($this->client_key, $this->client_secret));
+        $this->_paypal = new  \PayPal\Rest\ApiContext(new  OAuthTokenCredential($this->client_key, $this->client_secret));
     }
 
     public function payRequest($items = [], $shipping, $invoiceNumber, $description)
@@ -96,7 +97,7 @@ class PayPal extends Component
             \Yii::$app->getResponse()->redirect($approvalUrl);
             
  
-        } catch (PayPalConnectionException $ex) {
+        } catch (paypalConnectionException $ex) {
             // This will print the detailed information on the exception.
             //REALLY HELPFUL FOR DEBUGGING
             \Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
@@ -120,7 +121,7 @@ class PayPal extends Component
             $response = $payment->execute($excute, $this->_paypal);
             return $response;
             
-        } catch (PayPalConnectionException $ex) {
+        } catch (paypalConnectionException $ex) {
             // This will print the detailed information on the exception.
             //REALLY HELPFUL FOR DEBUGGING
             \Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
